@@ -1,0 +1,54 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg width="360" height="360" version="1.1"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<defs>
+  <script type="text/javascript"><![CDATA[
+    var oldclock = 0;
+    function handRotate(hand, angle) {
+      document.getElementById(hand).setAttribute("transform",
+        "translate(180,180),rotate(" + angle + ")");
+	}
+    
+    function flag(){ return "flag{ididntclockit}"; }
+    
+    function updateClock() {
+      if((d=new Date()).getTime()==oldclock)return;oldclock=d.getTime();
+      handRotate("seconds", s = 6*d.getSeconds());
+      handRotate("minutes", m = 13*(d.getMinutes()+s/360.0));
+      handRotate("hours"  ,    330*(d.getHours()+m/260.0));
+    }
+
+    window.onload = function() { updateClock(); window.setInterval(updateClock, 50); }
+  ]]></script>
+
+  <g id="sublines" fill="#000" fill-opacity="0.15">
+    <rect x="-4" width="8" y="-170" height="32"/>
+    <rect x="-4" width="8"  y="138" height="32"/>
+    <rect x="-170" width="32" y="-4" height="8"/>
+    <rect x="138"  width="32" y="-4" height="8"/>
+  </g>
+</defs>
+
+<g transform="translate(180,180)" fill="#000" fill-opacity="0.3">
+  <rect x="-18" width="12" y="-170" height="64"/>
+  <rect x="6" width="12" y="-170" height="64"/>
+  <rect x="-6" width="12"  y="106" height="64"/>
+  <rect x="-170" width="64" y="-6" height="12"/>
+  <rect x="106"  width="64" y="-6" height="12"/>
+</g>
+
+<use x="0" y="0" transform="translate(180,180),rotate( 30)" xlink:href="#sublines" />
+<use x="0" y="0" transform="translate(180,180),rotate(-30)" xlink:href="#sublines" />
+
+<rect id="hours" x="-8" width="16" y="-88" height="96" fill="#000" transform="translate(180,180)" />
+<rect id="minutes" x="-5" width="10" y="-165" height="170" fill="#000" transform="translate(180,180)" />
+<rect id="seconds" x="-2" width="4" y="-175" height="200" fill="#f00" transform="translate(180,180)" />
+<circle cx="180" cy="180" r="12" fill="#f00" />
+
+</svg>
+
