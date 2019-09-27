@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Authentication Required!</title>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<style>
+			body {
+				background-color: rgba(214, 214, 214, 214);
+			}
+			
+			.jumbotron {
+				margin-top: 10em;
+				text-align: center;
+				background-color: rgba(214, 214, 214, 214);
+			}
+		
+			
+			.form-control-inline {
+				min-width: 0;
+				width: auto;
+				display: inline;
+			}
+			
+		</style>
+
+	</head>
+  <body>
+	<div class="container " role="main">
+		<div class="jumbotron">
+			<div id="status" style="text-align: center; font-size: 10em;"><span class="glyphicon glyphicon-lock"></span></div>
+			<div id="loginform">
+				<form name="form" action="/login.php" id="form" method="POST">
+					<div class="form-group" style="min-width: 0;">
+						<input class="form-control input-lg form-control-inline" type="password" class="form-control" id="password" name="password" placeholder="Password">
+						<input type="hidden" id="authkey" name="authkey" value="489fy13098fmy23r09g824htv09t8h">
+					</div>
+				</form>
+			</div>
+		</div>
+  	</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+	<script>
+		url = "login.php";
+		tries = 0;
+
+		function setContent(field,content){
+			$(field).html(content);
+		}
+
+
+		$( "#form" ).submit(function( event ) {
+		    if(tries>=3){
+    			alert("Error! Permission Denied!");
+    			setContent('.jumbotron','<img src="error.gif" alt="Error!"/><audio autoplay loop><source src="error.mp3" type="audio/mpeg"></audio>');
+    			$('.jumbotron').css({'background-color': 'white'});
+			}
+			
+			event.preventDefault();
+			data = $("#form").serializeArray();
+			var posting = $.post( url, data );
+			posting.done(function( data ) {
+    			results = $.parseJSON(data);
+    			console.log(results);
+    			if(results!==null){
+    				if(results['success']==0){
+    					tries = tries + 1 ;
+    					setContent('#status','<span class="glyphicon glyphicon-warning-sign"></span>');
+    					setTimeout(function(){ setContent('#status','<span class="glyphicon glyphicon-lock"></span>') },1000);
+    				} else {
+    					setContent('#status',results['icon']);
+    					setContent('#loginform',results['content']);
+    				}
+    			}
+  			});
+		});
+</script>
+  </body>
+</html>

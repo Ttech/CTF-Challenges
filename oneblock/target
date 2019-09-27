@@ -1,0 +1,49 @@
+#!/usr/bin/python2.7
+from Crypto.Cipher import AES
+from Crypto import Random
+
+FLAG = "flag{oneblocktorulethemall}"
+MESSAGE = "user=root"
+BLOCK_SIZE = 16
+
+pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * chr(BLOCK_SIZE - len(s) % BLOCK_SIZE)
+unpad = lambda s: s[:-ord(s[len(s) - 1:])]
+
+class AESCipher:
+    def __init__(self,key):
+        self.key = key
+
+    def encrypt(self,plaintext):
+        plaintext = pad(plaintext)
+        iv = Random.new().read(AES.block_size)
+        cipher = AES.new(self.key,AES.MODE_CBC,iv)
+        return iv, cipher.encrypt(plaintext)
+
+    def decrypt(self,ciphertext,iv):
+        cipher = AES.new(self.key,AES.MODE_CBC,iv)
+        return unpad(cipher.decrypt(ciphertext))
+        
+
+def main():
+    key = Random.new().read(AES.block_size)
+    cipher = AESCipher(key)
+    orig_iv, ciphertext = cipher.encrypt(MESSAGE)
+    print "I encrypted the value user=root, send me the encryption of user=flag"
+    print "IV = {}".format(orig_iv)
+    print "Ciphertext Block = {}".format(ciphertext)
+    print
+    
+    iv = raw_input("Enter IV: ")
+
+    if len(iv) != 16:
+        print "Invalid IV Size"
+        exit()
+
+    if cipher.decrypt(ciphertext,iv) == "user=flag":
+        print FLAG
+    else:
+        print "Failed to change ciphertext to user=flag :("
+
+
+if __name__ == '__main__':
+    main()

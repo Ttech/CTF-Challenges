@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html >
+	<head>
+    	<meta charset="UTF-8">
+    	<title>Hacked!</title>
+    	<!-- taken from http://stackoverflow.com/questions/4894488/blinking-text-cross-browser because classics aren't classics anymore -->
+		<script type="text/javascript">
+			function blinker(){
+				if(document.querySelector("blink")){
+					var d = document.querySelector("blink") ;
+					d.style.visibility= (d.style.visibility=='hidden'?'visible':'hidden');
+					setTimeout('blinker()', 500);
+				}
+			}
+		</script>
+</script>
+
+	</head>
+	<body style="background-color:black;color:green;font-size:5em;background-image: url('matrix.gif');background-size: cover;" onload="blinker();">
+		<div align="Center">
+			<h1>HACKED!</h1>
+			<img src="hacker.gif" alt="hacked.."/>
+			<marquee>NEWS FLASH ! NEWS FLASH ! NEWS FLASH ! </marquee>
+			<p><blink>EVERYONE HAS BEEN HACKED!</blink></p>
+			<!-- <p><a href="hacker-medium.html">Hackers Only...</a></p> -->
+			<!-- the flag is flag{hackthegibson} -->
+		</div>
+	</body>

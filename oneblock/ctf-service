@@ -1,0 +1,14 @@
+service supply
+{
+    protocol       = tcp
+    disable        = no
+    type           = UNLISTED
+    port           = 5555
+    flags          = REUSE
+    socket_type    = stream
+    wait           = no
+    user           = ctf
+    server         = /opt/target
+    log_on_failure += USERID
+}
+
